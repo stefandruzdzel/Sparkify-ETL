@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS users(
 
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS songs(
-    song_id TEXT PRIMARY KEY,
-    title TEXT,
+    song_id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
     artist_id TEXT,
     year NUMERIC,
     duration NUMERIC);
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS songs(
 
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS artists(
-    artist_id TEXT PRIMARY KEY,
-    name TEXT,
+    artist_id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
     location TEXT,
     latitude NUMERIC,
     longitude NUMERIC);
@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS artists(
 
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS time(
+    start_time BIGINT NOT NULL PRIMARY KEY,
     user_id BIGINT,
     hour INT,
     day INT,
@@ -83,8 +84,8 @@ ON CONFLICT DO NOTHING;
 """)
 
 
-time_table_insert = ("""INSERT INTO time (user_id, hour, day, week, month, year, weekday, song_id)
-VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
+time_table_insert = ("""INSERT INTO time (start_time, user_id, hour, day, week, month, year, weekday, song_id)
+VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
 ON CONFLICT DO NOTHING;
 """)
 

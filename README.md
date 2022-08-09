@@ -21,8 +21,6 @@ https://github.com/kenhanscombe/project-postgres
 
 ## Schema Design
 
-The following schema design was provided to me as part of the course rubric:
-
 ### Fact Table
 songplays - records in log data associated with song plays i.e. records with page NextSong
     songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
@@ -35,13 +33,10 @@ songs - songs in music database
 artists - artists in music database
     artist_id, name, location, latitude, longitude
 time - timestamps of records in songplays broken down into specific units
-    start_time, hour, day, week, month, year, weekday
-    NOTE: the rubric specified "start_time", however that's redundant so I removed it
-        Additionally, this table does not have a way to be linked to the other tables.
-        I added in user_id
-        And I shuffled some code around to add in song_id as well.
-        So the final columns in the time table are:
-        user_id, hour, day, week, month, year, weekday, song_id
+    user_id, hour, day, week, month, year, weekday, song_id
+    With the rubric's scheme this table did not have a way to be linked to the other tables so I added in user_id and song_id.
+        
+        
 
 ### Other Notes
 1. If I was to devote more time to this, I would optimize the datatypes, researching whether smaller data types would be appropriate for some columns.
