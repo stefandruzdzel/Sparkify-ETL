@@ -4,8 +4,12 @@ import psycopg2
 import pandas as pd
 from sql_queries import *
 
-# Take a single song file path and opens it, updates song and artist tables
 def process_song_file(cur, filepath):
+    """
+    Takes a sql cursor and single song file path (.json).
+    Opens the file, updates song and artist tables
+    """
+
     # open song file
     df = pd.read_json(filepath, lines=True, dtype={'year': float})
 
@@ -18,8 +22,14 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 
-# Takes a log file path and opens it, updates time, user and songplay tables 
+
 def process_log_file(cur, filepath):
+    """
+    Takes a sql cursor log file path (.json)
+    Extracts data from the file and transforms the data, querying to find songid and artistid if there is a match
+    Loads data into time, user and songplay tables 
+    """
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -65,8 +75,14 @@ def process_log_file(cur, filepath):
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
-# Is given a folder path and function.  It performs that function across all .json files in the folder
+
 def process_data(cur, conn, filepath, func):
+    """
+    Is given a sql cursor, connection, folder path and function.
+    It performs the function across all .json files in the folder path.
+    Commits the changes to the tables performed in the functions
+    """
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -84,8 +100,11 @@ def process_data(cur, conn, filepath, func):
         conn.commit()
         print('{}/{} files processed.'.format(i, num_files))
 
-# Performs process_data on the log_data and song_data folders
+
 def main():
+    """
+    Performs process_data on the log_data and song_data folders
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
