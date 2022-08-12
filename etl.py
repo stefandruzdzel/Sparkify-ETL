@@ -4,7 +4,7 @@ import psycopg2
 import pandas as pd
 from sql_queries import *
 
-
+# Take a single song file path and opens it, updates song and artist tables
 def process_song_file(cur, filepath):
     # open song file
     df = pd.read_json(filepath, lines=True, dtype={'year': float})
@@ -18,7 +18,7 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 
-
+# Takes a log file path and opens it, updates time, user and songplay tables 
 def process_log_file(cur, filepath):
     # open log file
     df = pd.read_json(filepath, lines=True)
@@ -65,7 +65,7 @@ def process_log_file(cur, filepath):
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
-
+# Is given a folder path and function.  It performs that function across all .json files in the folder
 def process_data(cur, conn, filepath, func):
     # get all files matching extension from directory
     all_files = []
@@ -84,7 +84,7 @@ def process_data(cur, conn, filepath, func):
         conn.commit()
         print('{}/{} files processed.'.format(i, num_files))
 
-
+# Performs process_data on the log_data and song_data folders
 def main():
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
